@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
+import {stat} from "fs";
 
 export type TaskType = {
     id: string
@@ -13,6 +14,7 @@ type PropsType = {
     removeTask: (taskId: string) => void
     addTask: (valueTitle: string) => void
     changeFilter: (value: FilterValuesType) => void
+    changeStatus: (id: string, isDone: boolean) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -38,6 +40,12 @@ export function Todolist(props: PropsType) {
         props.removeTask(tID);
     }
 
+    const changeStatusHandler = (tId: string, status: boolean) => {
+        props.changeStatus(tId, status);
+        console.log(tId + status)
+    }
+
+
     return (
         <div>
             <h3>{props.title}</h3>
@@ -51,7 +59,9 @@ export function Todolist(props: PropsType) {
                         (t) => {
                             return (
                                 <li key={t.id}>
-                                    <input type="checkbox" checked={t.isDone}/>
+                                    <input type="checkbox"
+                                            checked={t.isDone}
+                                           onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>
                                     <span>{t.title}</span>
                                     <button onClick={() =>
                                         removeTaskHandler(t.id)}>x
