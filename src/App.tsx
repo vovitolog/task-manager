@@ -51,8 +51,8 @@ function App() {
         setFilter(value);
     }
 
-    function changeStatus(id: string) {
-        setTasks(tasks.map(t => t.id === id ? {...t, isDone: !t.isDone} : t));
+    function changeStatus(id: string, isDone: boolean) {
+        setTasks(tasks.map(t => t.id === id ? {...t, isDone: isDone} : t));
     }
 
     return (
