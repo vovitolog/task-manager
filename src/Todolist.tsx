@@ -23,7 +23,6 @@ type PropsType = {
 export function Todolist(props: PropsType) {
     const [title, setTitle] = useState('');
     const [error, setError] = useState<null | string>(null);
-    console.log(props.filter);
 
     const onchangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value);
@@ -56,6 +55,7 @@ export function Todolist(props: PropsType) {
         console.log(tId + status)
     }
 
+    const listLength = props.tasks.length;
 
     return (
         <div>
@@ -70,40 +70,43 @@ export function Todolist(props: PropsType) {
                 <button onClick={addTaskHandler}>+</button>
                 {error && <div className={'error-message'}>{error}</div>}
             </div>
-            <ul>
-                {
-                    props.tasks.map(
-                        (t) => {
-                            return (
-                                <li
-                                    className={t.isDone? 'is-done' : ''}
-                                    key={t.id}>
-                                    <input type="checkbox"
-                                           checked={t.isDone}
-                                           onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>
-                                    <span>{t.title}</span>
-                                    <button onClick={() =>
-                                        removeTaskHandler(t.id)}>x
-                                    </button>
-                                </li>
-                            )
-                        }
-                    )
-                }
-            </ul>
+            {listLength ? <ul>
+                    {
+                        props.tasks.map(
+                            (t) => {
+                                return (
+                                    <li
+                                        className={t.isDone ? 'is-done' : ''}
+                                        key={t.id}>
+                                        <input type="checkbox"
+                                               checked={t.isDone}
+                                               onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>
+                                        <span>{t.title}</span>
+                                        <button onClick={() =>
+                                            removeTaskHandler(t.id)}>x
+                                        </button>
+                                    </li>
+                                )
+                            }
+                        )
+                    }
+                </ul>
+                : <span style={{color: 'red', margin: '20px', display: 'inline-block'}}> List is empty</span>
+            }
+
             <div>
                 <button
-                    className={props.filter === 'all' ? 'active-filter': ''}
+                    className={props.filter === 'all' ? 'active-filter' : ''}
                     onClick={changeFilterHandler('all')}>
                     All
                 </button>
                 <button
-                    className={props.filter === 'active' ? 'active-filter': ''}
+                    className={props.filter === 'active' ? 'active-filter' : ''}
                     onClick={changeFilterHandler('active')}>
                     Active
                 </button>
                 <button
-                    className={props.filter === 'completed' ? 'active-filter': ''}
+                    className={props.filter === 'completed' ? 'active-filter' : ''}
                     onClick={changeFilterHandler('completed')}>
                     Completed
                 </button>
