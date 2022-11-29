@@ -6,7 +6,6 @@ import {v1} from "uuid";
 export type FilterValuesType = "all" | "active" | "completed";
 
 function App() {
-    console.log(v1())
 
     let [tasks, setTasks] = useState([
         {id: v1(), title: "HTML&CSS", isDone: true},
@@ -52,12 +51,8 @@ function App() {
         setFilter(value);
     }
 
-    function changeStatus(id: string, isDone: boolean) {
-        const task = tasks.find(t => t.id === id)
-        if (task) {
-            task.isDone = isDone;
-        }
-               setTasks([...tasks]);
+    function changeStatus(id: string) {
+        setTasks(tasks.map(t => t.id === id ? {...t, isDone: !t.isDone} : t));
     }
 
     return (
