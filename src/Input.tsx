@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 type InputPropsType = {
     addItem: (title: string) => void
@@ -31,13 +33,23 @@ export const Input = (props: InputPropsType) => {
 
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
+            <TextField variant="outlined" value={title}
+                       onChange={onChangeHandler}
+                       onKeyDown={onKeyPressHandler}
+                       size={"small"}
+                       error={!!error}
+                       label={error? 'Введите значение' : 'Введите текст'}
+                // className={error ? "error" : ""}
             />
-            <button onClick={addItem}>+</button>
-            {error && <div className="error-message">{error}</div>}
+            <Button color={'primary'} style={{
+                marginLeft: '10px',
+                maxWidth: '38px',
+                minWidth: '38px',
+                maxHeight: '38px',
+                minHeight: '38px',
+                background: 'black'
+            }} variant={'contained'} onClick={addItem}>+</Button>
+            {/*{error && <div className="error-message">{error}</div>}*/}
         </div>
     );
 };
