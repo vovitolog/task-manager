@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from "@mui/material/IconButton";
 import Checkbox from '@mui/material/Checkbox';
 import Button from "@mui/material/Button";
+import {CustomCheckbox} from "./components/CustomCheckbox";
 
 
 export type TaskType = {
@@ -46,6 +47,10 @@ export function Todolist(props: PropsType) {
         props.updateTodolist(props.todolistId, newTitle)
     }
 
+    const changeTaskStatusHandler = (checkedValue: boolean, taskId: string) => {
+        props.changeTaskStatus(props.todolistId, taskId, checkedValue)
+    }
+
 
     return <div>
         <div>
@@ -62,17 +67,23 @@ export function Todolist(props: PropsType) {
             {
                 props.tasks.map(t => {
                     const onClickHandler = () => props.removeTask(props.todolistId, t.id)
-                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(props.todolistId, t.id, e.currentTarget.checked);
-                    }
+                    // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                    //     props.changeTaskStatus(props.todolistId, t.id, e.currentTarget.checked);
+                    // }
                     const updateTaskHandler = (newTitle: string) => {
                         props.updateTask(props.todolistId, t.id, newTitle);
                     }
 
+                    // const changeTaskStatusHandler = (checkedValue: boolean) => {
+                    //     props.changeTaskStatus(props.todolistId, t.id, checkedValue)
+                    // }
+
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <Checkbox
-                               onChange={onChangeHandler}
-                               checked={t.isDone}/>
+                        {/*<Checkbox*/}
+                        {/*    onChange={onChangeHandler}*/}
+                        {/*    checked={t.isDone}/>*/}
+
+                        <CustomCheckbox callback={(checkedValue)=> changeTaskStatusHandler (checkedValue, t.id)} isDone={t.isDone}/>
                         <EditableSpan title={t.title} updateItem={updateTaskHandler}/>
                         <IconButton onClick={onClickHandler}>
                             <DeleteIcon/>

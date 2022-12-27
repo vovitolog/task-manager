@@ -63,7 +63,7 @@ function App() {
     }
 
     function addTodolist(title: string) {
-        const newId = v1()
+        const newId = v1();
         const newTodolist: TodolistsType = {id: newId, title: title, filter: 'all'};
         setTodolists([...todolists, newTodolist]);
 
