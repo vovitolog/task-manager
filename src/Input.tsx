@@ -26,16 +26,18 @@ export const Input = (props: InputPropsType) => {
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null);
-        if (e.key === 'Enter') {
-            props.addItem(title)
+        if (e.charCode === 13) {
+            addItem();
         }
     }
+
+    console.log(`tttttt${title}`)
 
     return (
         <div>
             <TextField variant="outlined" value={title}
                        onChange={onChangeHandler}
-                       onKeyDown={onKeyPressHandler}
+                       onKeyPress={onKeyPressHandler}
                        size={"small"}
                        error={!!error}
                        label={error? 'Введите значение' : 'Введите текст'}
