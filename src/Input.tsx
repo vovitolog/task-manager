@@ -31,8 +31,6 @@ export const Input = (props: InputPropsType) => {
         }
     }
 
-    console.log(`tttttt${title}`)
-
     return (
         <div>
             <TextField variant="outlined" value={title}

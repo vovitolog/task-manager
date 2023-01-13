@@ -4,10 +4,8 @@ import {Input} from "./Input";
 import {EditableSpan} from "./EditableSpan";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from "@mui/material/IconButton";
-import Checkbox from '@mui/material/Checkbox';
 import Button from "@mui/material/Button";
 import {CustomCheckbox} from "./components/CustomCheckbox";
-
 
 export type TaskType = {
     id: string
@@ -51,7 +49,6 @@ export function Todolist(props: PropsType) {
         props.changeTaskStatus(props.todolistId, taskId, checkedValue)
     }
 
-
     return <div>
         <div>
             <h3 style={{display: 'inline-block'}}>
@@ -63,7 +60,7 @@ export function Todolist(props: PropsType) {
 
         </div>
         <Input addItem={addTaskHandler}/>
-        <ul>
+         <ul>
             {
                 props.tasks.map(t => {
                     const onClickHandler = () => props.removeTask(props.todolistId, t.id)
