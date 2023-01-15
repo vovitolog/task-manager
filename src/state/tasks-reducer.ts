@@ -4,7 +4,7 @@ import {TasksStateType} from "../App";
 import {addTodolistACType, removeTodolistAC, removeTodolistACType} from "./todolist-reducer";
 import {stepClasses} from "@mui/material";
 
-export const tasksReducer = (state: TasksStateType, action: TasksReducerTypes): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: TasksReducerTypes): TasksStateType => {
     switch (action.type) {
 
         case 'REMOVE-TASK': {
@@ -50,9 +50,11 @@ export const tasksReducer = (state: TasksStateType, action: TasksReducerTypes): 
         }
 
         default:
-            throw new Error('Unknown type');
+            return state
     }
 }
+
+const initialState: TasksStateType = {};
 
 type TasksReducerTypes =
     removeTaskACType

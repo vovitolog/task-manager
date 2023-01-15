@@ -1,7 +1,7 @@
-import {FilterValuesType, TodolistsType} from "../App";
+import {FilterValuesType, TasksStateType, TodolistsType} from "../App";
 import {v1} from "uuid";
 
-export const todolistReducer = (state: Array<TodolistsType>, action: TodolistReducerTypes): Array<TodolistsType> => {
+export const todolistReducer = (state: Array<TodolistsType> = initialState, action: TodolistReducerTypes): Array<TodolistsType> => {
     switch (action.type) {
         case 'ADD-TODOLIST': {
             const newId = action.payload.todolistId;
@@ -22,9 +22,11 @@ export const todolistReducer = (state: Array<TodolistsType>, action: TodolistRed
             } : tl)
         }
         default:
-            throw new Error('Unknown type');
+            return state
     }
 }
+
+const initialState: Array<TodolistsType> = [];
 
 type TodolistReducerTypes = removeTodolistACType | addTodolistACType | updateTodolistACType | changeTodolistFilterACType
 
