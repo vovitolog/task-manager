@@ -20,6 +20,26 @@ type ResponseType<D> = {
     data: D
 }
 
+export type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadLine: string
+    id: string
+    todolistId: string
+    order: number
+    addedDate: string
+}
+
+type GetTasksResponse = {
+    error: string | null
+    totalCont: number
+    items: TaskType[]
+}
+
 
 export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
@@ -52,4 +72,11 @@ export const todolistAPI = {
         )
         return promise
     },
+    getTasks(todolistId: string) {
+        const promise = axios.get <GetTasksResponse>(
+            `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
+            settings
+        )
+        return promise
+    }
 }
