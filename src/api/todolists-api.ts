@@ -96,8 +96,9 @@ export const todolistAPI = {
         return promise
     },
     createTask(todolistId: string, taskTitle: string) {
-        const promise = instance.post<any>(
-            `todo-lists/${todolistId}/tasks/$`,
+        const promise = instance.post<ResponseType<TaskType>>(
+            `todo-lists/${todolistId}/tasks/`,
+            {title: taskTitle}
         )
         return promise
     }
