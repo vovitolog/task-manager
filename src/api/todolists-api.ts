@@ -94,5 +94,11 @@ export const todolistAPI = {
             `todo-lists/${todolistId}/tasks/${taskId}`,
         )
         return promise
+    },
+    createTask(todolistId: string, taskTitle: string) {
+        const promise = instance.post<any>(
+            `todo-lists/${todolistId}/tasks/$`,
+        )
+        return promise
     }
 }
