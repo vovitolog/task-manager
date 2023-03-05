@@ -15,13 +15,6 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@mui/icons-material";
 import {TodolistType} from "./api/todolists-api";
 
-export type FilterValuesType = "all" | "active" | "completed";
-// export type TodolistType = {
-//     id: string
-//     title: string
-//     filter: FilterValuesType
-// }
-
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
@@ -42,7 +35,7 @@ function AppWithRedux() {
         dispatch(action);
     }, [dispatch])
 
-    const changeStatus = useCallback((id: string, isDone: boolean, todolistId: string) => {
+    const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         const action = changeTaskStatusAC(id, isDone, todolistId);
         dispatch(action);
     }, [dispatch])

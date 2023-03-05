@@ -7,13 +7,6 @@ import {Delete} from "@mui/icons-material";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolists-api";
 
-
-// export type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-// }
-
 type PropsType = {
     id: string
     title: string
