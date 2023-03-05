@@ -29,12 +29,19 @@ export type ChangeTaskTitleActionType = {
     title: string
 }
 
+export type SetTasksActionType = {
+    type: 'SET-TASKS',
+    tasks: Array<TaskType>
+    todolistId: string
+}
+
 type ActionsType = RemoveTaskActionType | AddTaskActionType
     | ChangeTaskStatusActionType
     | ChangeTaskTitleActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
     | SetTodolistsActionType
+    | SetTasksActionType
 
 const initialState: TasksStateType = {}
 
@@ -86,9 +93,14 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'SET-TODOLISTS': {
             const copyState = {...state};
 
-            action.todolists.forEach(tl=> {
-                return  copyState[tl.id] = [];
+            action.todolists.forEach(tl => {
+                return copyState[tl.id] = [];
             })
+            return copyState;
+        }
+        case 'SET-TASKS': {
+            const copyState = {...state};
+            copyState[action.todolistId] = action.tasks;
             return copyState;
         }
         default:
