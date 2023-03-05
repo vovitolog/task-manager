@@ -27,11 +27,26 @@ type ResponseType<D = {}> = {
     data: D
 }
 
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+
 export type TaskType = {
     description: string
     title: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadLine: string
     id: string
@@ -99,6 +114,13 @@ export const todolistAPI = {
         const promise = instance.post<ResponseType<TaskType>>(
             `todo-lists/${todolistId}/tasks/`,
             {title: taskTitle}
+        )
+        return promise
+    },
+    updateTask(todolistId: string, taskId: string, newTaskTitle: string) {
+        const promise = instance.put<ResponseType<TaskType>>(
+            `todo-lists/${todolistId}/tasks/${taskId}`,
+            {title: newTaskTitle}
         )
         return promise
     }
