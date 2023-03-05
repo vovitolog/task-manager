@@ -1,7 +1,7 @@
 import {TasksStateType} from '../App';
-import {TaskType} from '../Todolist';
 import {v1} from 'uuid';
 import {AddTodolistActionType, RemoveTodolistActionType} from './todolists-reducer';
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolists-api";
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
@@ -49,9 +49,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'ADD-TASK': {
             const stateCopy = {...state}
             const newTask: TaskType = {
-                id: v1(),
-                title: action.title,
-                isDone: false
+                id: v1(), title: action.title, status: TaskStatuses.New, todolistId: action.todolistId,
+                description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0
             }
             const tasks = stateCopy[action.todolistId];
             const newTasks = [newTask, ...tasks];
@@ -61,8 +60,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'CHANGE-TASK-STATUS': {
             const todolistTasks = state[action.todolistId];
             state[action.todolistId] = todolistTasks.map(task => task.id === action.taskId
-            ? {...task, isDone: action.isDone}
-            : task)
+                ? {...task, status: action.status}
+                : task)
             return {...state}
         }
         case 'CHANGE-TASK-TITLE': {
@@ -95,7 +94,7 @@ export const addTaskAC = (title: string, todolistId: string): AddTaskActionType 
     return {type: 'ADD-TASK', title, todolistId}
 }
 export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string): ChangeTaskStatusActionType => {
-    return {type: 'CHANGE-TASK-STATUS', isDone, todolistId, taskId}
+    return {type: 'CHANGE-TASK-STATUS', status, todolistId, taskId}
 }
 export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
     return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId}
