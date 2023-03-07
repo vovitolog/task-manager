@@ -30,21 +30,21 @@ function AppWithReducers() {
     let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
         [todolistId1]: [
             {
-                id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todolistId: todolistId1,
+                id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todoListId: todolistId1,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             },
             {
-                id: v1(), title: "JS", status: TaskStatuses.Completed, todolistId: todolistId1,
+                id: v1(), title: "JS", status: TaskStatuses.Completed, todoListId: todolistId1,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             }
         ],
         [todolistId2]: [
             {
-                id: v1(), title: "Milk", status: TaskStatuses.Completed, todolistId: todolistId2,
+                id: v1(), title: "Milk", status: TaskStatuses.Completed, todoListId: todolistId2,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             },
             {
-                id: v1(), title: "React Book", status: TaskStatuses.Completed, todolistId: todolistId2,
+                id: v1(), title: "React Book", status: TaskStatuses.Completed, todoListId: todolistId2,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             }
         ]
@@ -56,7 +56,18 @@ function AppWithReducers() {
     }
 
     function addTask(title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId);
+        const action = addTaskAC({
+            todoListId: todolistId,
+            title: title,
+            status: TaskStatuses.New,
+            id: "Exists",
+            order: 0,
+            startDate: "",
+            priority: 0,
+            description: "",
+            deadLine: "",
+            addedDate: ""
+        });
         dispatchToTasks(action);
     }
 

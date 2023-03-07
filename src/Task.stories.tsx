@@ -16,7 +16,7 @@ export const TaskBaseExample = (props: any) => {
     return <>
 
         <Task task={{
-            id: '1', status: TaskStatuses.Completed, title: 'CSS', todolistId: "1",
+            id: '1', status: TaskStatuses.Completed, title: 'CSS', todoListId: "1",
             description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0
         }}
               changeTaskTitle={changeTaskTitleCallback}
@@ -25,7 +25,7 @@ export const TaskBaseExample = (props: any) => {
               todolistId={'todolistId1'}
         />
         <Task task={{
-            id: '2', status: TaskStatuses.New, title: 'JS', todolistId: "2",
+            id: '2', status: TaskStatuses.New, title: 'JS', todoListId: "2",
             description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0
         }}
               changeTaskTitle={changeTaskTitleCallback}

@@ -31,21 +31,21 @@ function App() {
     let [tasks, setTasks] = useState<TasksStateType>({
         [todolistId1]: [
             {
-                id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todolistId: todolistId1,
+                id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todoListId: todolistId1,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             },
             {
-                id: v1(), title: "JS", status: TaskStatuses.Completed, todolistId: todolistId1,
+                id: v1(), title: "JS", status: TaskStatuses.Completed, todoListId: todolistId1,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             }
         ],
         [todolistId2]: [
             {
-                id: v1(), title: "Milk", status: TaskStatuses.Completed, todolistId: todolistId2,
+                id: v1(), title: "Milk", status: TaskStatuses.Completed, todoListId: todolistId2,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             },
             {
-                id: v1(), title: "React Book", status: TaskStatuses.Completed, todolistId: todolistId2,
+                id: v1(), title: "React Book", status: TaskStatuses.Completed, todoListId: todolistId2,
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
             }
         ]
@@ -62,7 +62,7 @@ function App() {
 
     function addTask(title: string, todolistId: string) {
         let task = {
-            id: v1(), title: title, status: TaskStatuses.Completed, todolistId: todolistId,
+            id: v1(), title: title, status: TaskStatuses.Completed, todoListId: todolistId,
             description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0,
         };
         //достанем нужный массив по todolistId:

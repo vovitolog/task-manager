@@ -50,7 +50,7 @@ export type TaskType = {
     startDate: string
     deadLine: string
     id: string
-    todolistId: string
+    todoListId: string
     order: number
     addedDate: string
 }
@@ -111,7 +111,7 @@ export const todolistAPI = {
         return promise
     },
     createTask(todolistId: string, taskTitle: string) {
-        const promise = instance.post<ResponseType<TaskType>>(
+        const promise = instance.post<ResponseType<{item: TaskType }>>(
             `todo-lists/${todolistId}/tasks/`,
             {title: taskTitle}
         )
