@@ -121,3 +121,6 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
     return {type: 'CHANGE-TASK-TITLE', title, todolistId, taskId}
 }
 
+export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): SetTasksActionType => {
+    return {type: 'SET-TASKS', tasks, todolistId}
+}
