@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {FilterValuesType} from '../src/state/todolists-reducer';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
@@ -6,6 +6,8 @@ import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {useDispatch} from "react-redux";
+import { fetchTasksTC } from './state/tasks-reducer';
 
 type PropsType = {
     id: string
@@ -22,7 +24,14 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-    console.log(`Todolist ${props.id} called`)
+    console.log(`Todolist ${props.id} called`);
+
+    const dispatch = useDispatch();
+    useEffect (()=> {
+        // @ts-ignore
+        dispatch(fetchTasksTC(props.id));
+    },[])
+
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
     }, [props.addTask, props.id]);
@@ -40,7 +49,7 @@ export const Todolist = React.memo((props: PropsType) => {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasksForTodolist = props.tasks.filter(t =>t.status === TaskStatuses.Completed);
+        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed);
     }
 
     const onAllClickHandler = useCallback(() => props.changeFilter("all", props.id), [props.changeFilter, props.id]);
