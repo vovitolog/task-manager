@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {TaskStatuses, TaskType, todolistAPI} from "./api/todolists-api";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -31,9 +31,10 @@ function AppWithRedux() {
     }, [])
 
     const removeTask = useCallback((id: string, todolistId: string) => {
-        const action = removeTaskAC(id, todolistId);
-        dispatch(action);
-    }, [dispatch])
+        const thunk = removeTaskAC(id, todolistId);
+        dispatch(thunk)
+
+    }, [])
 
     const addTask = useCallback((title: string, todolistId: string) => {
         const action = addTaskAC(title, todolistId);
