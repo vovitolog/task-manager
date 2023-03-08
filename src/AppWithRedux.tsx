@@ -6,7 +6,7 @@ import {
     addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC, fetchTodolistsTC, FilterValuesType,
-    removeTodolistAC, TodolistDomainType,
+    removeTodolistAC, removeTodolistsTC, TodolistDomainType,
 } from './state/todolists-reducer';
 import {
     addTaskAC,
@@ -66,9 +66,12 @@ function AppWithRedux() {
     }, [dispatch])
 
     const removeTodolist = useCallback((id: string) => {
-        const action = removeTodolistAC(id);
-        dispatch(action);
-    }, [dispatch]);
+        const thunk = removeTodolistsTC(id);
+        // @ts-ignore
+        dispatch(thunk);
+        // const action = removeTodolistAC(id);
+        // dispatch(action);
+    }, []);
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         const action = changeTodolistTitleAC(id, title);
