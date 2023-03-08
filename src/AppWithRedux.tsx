@@ -3,7 +3,7 @@ import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import {
-    addTodolistAC,
+    addTodolistAC, addTodolistTC,
     changeTodolistFilterAC,
     changeTodolistTitleAC, fetchTodolistsTC, FilterValuesType,
     removeTodolistAC, removeTodolistsTC, TodolistDomainType,
@@ -69,8 +69,6 @@ function AppWithRedux() {
         const thunk = removeTodolistsTC(id);
         // @ts-ignore
         dispatch(thunk);
-        // const action = removeTodolistAC(id);
-        // dispatch(action);
     }, []);
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
@@ -79,9 +77,12 @@ function AppWithRedux() {
     }, [dispatch])
 
     const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
-    }, [dispatch]);
+        const thunk = addTodolistTC(title);
+        // @ts-ignore
+        dispatch(thunk);
+        // const action = addTodolistAC(title);
+        // dispatch(action);
+    }, []);
 
     return (
         <div className="App">
