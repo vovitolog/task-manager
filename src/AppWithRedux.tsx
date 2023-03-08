@@ -54,7 +54,6 @@ function AppWithRedux() {
 
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         // const action = changeTaskTitleAC(id, newTitle, todolistId);
-        // dispatch(action);
         const thunk = updateTaskTC(id, {title: newTitle}, todolistId);
         // @ts-ignore
         dispatch(thunk);
