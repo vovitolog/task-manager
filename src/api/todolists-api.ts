@@ -58,10 +58,10 @@ export type TaskType = {
 export type UpdateTaskModelType = {
     description: string
     title: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
-    deadLine: string
+    deadline: string
 }
 
 type GetTasksResponse = {
@@ -117,10 +117,10 @@ export const todolistAPI = {
         )
         return promise
     },
-    updateTask(todolistId: string, taskId: string, newTaskTitle: string) {
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         const promise = instance.put<ResponseType<TaskType>>(
             `todo-lists/${todolistId}/tasks/${taskId}`,
-            {title: newTaskTitle}
+            {...model}
         )
         return promise
     }
