@@ -5,7 +5,7 @@ import {AddItemForm} from './AddItemForm';
 import {
     addTodolistAC, addTodolistTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, fetchTodolistsTC, FilterValuesType,
+    changeTodolistTitleAC, changeTodolistTitleTC, fetchTodolistsTC, FilterValuesType,
     removeTodolistAC, removeTodolistsTC, TodolistDomainType,
 } from './state/todolists-reducer';
 import {
@@ -72,16 +72,15 @@ function AppWithRedux() {
     }, []);
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
-        const action = changeTodolistTitleAC(id, title);
-        dispatch(action);
-    }, [dispatch])
+        const thunk = changeTodolistTitleTC(id, title);
+        // @ts-ignore
+        dispatch(thunk);
+    }, [])
 
     const addTodolist = useCallback((title: string) => {
         const thunk = addTodolistTC(title);
         // @ts-ignore
         dispatch(thunk);
-        // const action = addTodolistAC(title);
-        // dispatch(action);
     }, []);
 
     return (
