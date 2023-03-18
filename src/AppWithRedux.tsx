@@ -12,10 +12,11 @@ import {
     TodolistDomainType,
 } from './state/todolists-reducer';
 import {addTaskTC, removeTaskTC, updateTaskTC} from './state/tasks-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './state/store';
+import {useSelector} from 'react-redux';
+import {AppRootStateType, useAppDispatch} from './state/store';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
+import LinearProgress from "@mui/material/LinearProgress"
 import {TaskStatuses, TaskType} from "./api/todolists-api";
 
 export type TasksStateType = {
@@ -26,36 +27,31 @@ function AppWithRedux() {
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // @ts-ignore
-        dispatch(fetchTodolistsTC());
+          dispatch(fetchTodolistsTC());
     }, [])
 
     const removeTask = useCallback((id: string, todolistId: string) => {
         const thunk = removeTaskTC(id, todolistId);
-        // @ts-ignore
         dispatch(thunk);
 
     }, [])
 
     const addTask = useCallback((title: string, todolistId: string) => {
         const thunk = addTaskTC(title, todolistId);
-        // @ts-ignore
         dispatch(thunk);
     }, [])
 
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         const thunk = updateTaskTC(id, {status}, todolistId);
-        // @ts-ignore
          dispatch(thunk);
     }, [])
 
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         // const action = changeTaskTitleAC(id, newTitle, todolistId);
         const thunk = updateTaskTC(id, {title: newTitle}, todolistId);
-        // @ts-ignore
         dispatch(thunk);
     }, [])
 
@@ -66,19 +62,16 @@ function AppWithRedux() {
 
     const removeTodolist = useCallback((id: string) => {
         const thunk = removeTodolistsTC(id);
-        // @ts-ignore
         dispatch(thunk);
     }, []);
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         const thunk = changeTodolistTitleTC(id, title);
-        // @ts-ignore
         dispatch(thunk);
     }, [])
 
     const addTodolist = useCallback((title: string) => {
         const thunk = addTodolistTC(title);
-        // @ts-ignore
         dispatch(thunk);
     }, []);
 
@@ -95,6 +88,7 @@ function AppWithRedux() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
+            <LinearProgress color={'secondary'}/>
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
                     <AddItemForm addItem={addTodolist}/>
