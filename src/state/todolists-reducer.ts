@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {todolistAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {setLoadingStatusAC, setLoadingStatusType} from "../app/app-reducer";
+import {setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
@@ -31,7 +31,7 @@ type ActionsType = RemoveTodolistActionType | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
     | SetTodolistsActionType
-    | setLoadingStatusType
+    | SetLoadingStatusType
 
 const initialState: Array<TodolistDomainType> = []
 

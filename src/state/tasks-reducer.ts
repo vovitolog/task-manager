@@ -3,7 +3,7 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
-import {setLoadingStatusAC} from "../app/app-reducer";
+import {setErrorAC, SetErrorType, setLoadingStatusAC} from "../app/app-reducer";
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
@@ -43,6 +43,7 @@ type ActionsType = RemoveTaskActionType | AddTaskActionType
     | RemoveTodolistActionType
     | SetTodolistsActionType
     | SetTasksActionType
+    | SetErrorType
 
 const initialState: TasksStateType = {}
 
@@ -129,8 +130,8 @@ export const fetchTasksTC = (todolistId: string) => {
         todolistAPI.getTasks(todolistId)
             .then(res => {
                 dispatch(setTasksAC(res.data.items, todolistId))
+                dispatch(setLoadingStatusAC('idle'))
             })
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
@@ -141,9 +142,9 @@ export const removeTaskTC = (taskId: string, todolistId: string) => {
             .then(res => {
                     const action = removeTaskAC(taskId, todolistId);
                     dispatch(action);
+                    dispatch(setLoadingStatusAC('idle'))
                 }
             )
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
@@ -152,12 +153,15 @@ export const addTaskTC = (title: string, todolistId: string) => {
         dispatch(setLoadingStatusAC('loading'))
         todolistAPI.createTask(todolistId, title)
             .then(res => {
-                    console.log(res);
-                    const action = addTaskAC(res.data.data.item);
-                    dispatch(action);
+                    if (res.data.resultCode === 0) {
+                        dispatch(addTaskAC(res.data.data.item));
+                        dispatch(setLoadingStatusAC('idle'))
+                    } else if (res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    } else dispatch(setErrorAC('Some Error ocured'))
+                dispatch(setLoadingStatusAC('failed'))
                 }
             )
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
@@ -192,8 +196,8 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             .then(res => {
                     const action = updateTaskAC(taskId, domainModel, todolistId);
                     dispatch(action);
+                    dispatch(setLoadingStatusAC('idle'))
                 }
             )
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
