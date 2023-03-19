@@ -1,6 +1,7 @@
 import {v1} from 'uuid';
 import {todolistAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
+import {setLoadingStatusAC, setLoadingStatusType} from "../app/app-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
@@ -30,6 +31,7 @@ type ActionsType = RemoveTodolistActionType | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
     | SetTodolistsActionType
+    | setLoadingStatusType
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -90,36 +92,44 @@ export const setTodolistAC = (todolists: Array<TodolistType>): SetTodolistsActio
 
 export const fetchTodolistsTC = () => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.getTodolists()
             .then(res => {
-                dispatch(setTodolistAC(res.data))
+                dispatch(setTodolistAC(res.data));
             })
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
 export const removeTodolistsTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.deleteTodolist(todolistId)
             .then(res => {
                 dispatch(removeTodolistAC(todolistId))
             })
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
 export const addTodolistTC = (title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.createTodolist(title)
             .then(res => {
                 dispatch(addTodolistAC(res.data.data.item))
             })
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
 export const changeTodolistTitleTC = (id: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.updateTodolist(id, title)
             .then(res => {
                 dispatch(changeTodolistTitleAC(id, title))
             })
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }

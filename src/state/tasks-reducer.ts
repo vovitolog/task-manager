@@ -3,6 +3,7 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
+import {setLoadingStatusAC} from "../app/app-reducer";
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
@@ -124,26 +125,31 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): SetTasks
 
 export const fetchTasksTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.getTasks(todolistId)
             .then(res => {
                 dispatch(setTasksAC(res.data.items, todolistId))
             })
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
 export const removeTaskTC = (taskId: string, todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.deleteTask(todolistId, taskId)
             .then(res => {
                     const action = removeTaskAC(taskId, todolistId);
                     dispatch(action);
                 }
             )
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
 export const addTaskTC = (title: string, todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.createTask(todolistId, title)
             .then(res => {
                     console.log(res);
@@ -151,6 +157,7 @@ export const addTaskTC = (title: string, todolistId: string) => {
                     dispatch(action);
                 }
             )
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
@@ -180,11 +187,13 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             status: task.status,
             ...domainModel
         }
+        dispatch(setLoadingStatusAC('loading'));
         todolistAPI.updateTask(todolistId, taskId, apiModel)
             .then(res => {
                     const action = updateTaskAC(taskId, domainModel, todolistId);
                     dispatch(action);
                 }
             )
+            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
