@@ -3,7 +3,7 @@ import {Provider} from "react-redux";
 import {tasksReducer} from "../state/tasks-reducer";
 import {todolistsReducer} from "../state/todolists-reducer";
 import {v1} from 'uuid';
-import {AppRootStateType} from "../state/store";
+import {AppRootStateType} from "../app/store";
 import {combineReducers, createStore} from "redux";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
 import {appReducer} from "../app/app-reducer";

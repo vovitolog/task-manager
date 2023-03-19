@@ -1,4 +1,3 @@
-import {TasksStateType} from '../App';
 import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType} from './todolists-reducer';
 import {
     ResultCode,
@@ -9,7 +8,7 @@ import {
     UpdateTaskModelType
 } from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "./store";
+import {AppRootStateType} from "../app/store";
 import {setErrorAC, SetErrorType, setLoadingStatusAC} from "../app/app-reducer";
 
 const initialState: TasksStateType = {}
@@ -89,7 +88,7 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
                     dispatch(setLoadingStatusAC('idle'))
                 } else if (res.data.messages.length) {
                     dispatch(setErrorAC(res.data.messages[0]))
-                } else dispatch(setErrorAC('Some Error ocured'))
+                } else dispatch(setErrorAC('Some Error occurred'))
                 dispatch(setLoadingStatusAC('failed'))
             }
         )
@@ -144,4 +143,8 @@ export type UpdateDomainTaskModelType = {
     priority?: TaskPriorities
     startDate?: string
     deadline?: string
+}
+
+export type TasksStateType = {
+    [key: string]: Array<TaskType>
 }
