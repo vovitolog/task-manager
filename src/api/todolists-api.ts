@@ -34,6 +34,12 @@ export enum TaskStatuses {
     Draft
 }
 
+export enum ResultCode {
+    SUCCEEDED = 0,
+    FAILED = 1,
+    CAPTCHA = 10
+}
+
 export enum TaskPriorities {
     Low,
     Middle,
@@ -111,7 +117,7 @@ export const todolistAPI = {
         return promise
     },
     createTask(todolistId: string, taskTitle: string) {
-        const promise = instance.post<ResponseType<{item: TaskType }>>(
+        const promise = instance.post<ResponseType<{ item: TaskType }>>(
             `todo-lists/${todolistId}/tasks/`,
             {title: taskTitle}
         )

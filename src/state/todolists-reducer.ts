@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {todolistAPI, TodolistType} from "../api/todolists-api";
+import {ResultCode, todolistAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {setErrorAC, setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
 import {addTaskAC} from "./tasks-reducer";
@@ -118,7 +118,7 @@ export const addTodolistTC = (title: string) => {
         dispatch(setLoadingStatusAC('loading'))
         todolistAPI.createTodolist(title)
             .then(res => {
-                    if (res.data.resultCode === 0) {
+                    if (res.data.resultCode === ResultCode.SUCCEEDED) {
                         dispatch(addTodolistAC(res.data.data.item));
                         dispatch(setLoadingStatusAC('idle'))
                     } else if (res.data.messages.length) {
