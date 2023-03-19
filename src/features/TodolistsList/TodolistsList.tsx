@@ -7,7 +7,7 @@ import {
     changeTodolistTitleTC,
     fetchTodolistsTC,
     FilterValuesType,
-    removeTodolistsTC,
+    removeTodolistTC,
     TodolistDomainType
 } from "./todolists-reducer";
 import {addTaskTC, removeTaskTC, updateTaskTC} from "./tasks-reducer";
@@ -55,7 +55,7 @@ export const TodolistsList: React.FC = () => {
     }, [dispatch])
 
     const removeTodolist = useCallback((id: string) => {
-        const thunk = removeTodolistsTC(id);
+        const thunk = removeTodolistTC(id);
         dispatch(thunk);
     }, []);
 
@@ -89,6 +89,7 @@ export const TodolistsList: React.FC = () => {
                                 addTask={addTask}
                                 changeTaskStatus={changeStatus}
                                 filter={tl.filter}
+                                entityStatus={tl.entityStatus}
                                 removeTodolist={removeTodolist}
                                 changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}

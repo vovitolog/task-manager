@@ -16,6 +16,8 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
         case 'SET-TODOLISTS':
             return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
+        case 'SET-ENTITY-STATUS':
+            return state.map(tl => tl.id === action.todolistId ? {...tl, entityStatus: action.entityStatus} : tl)
         default:
             return state;
     }
@@ -37,6 +39,9 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) =>
 export const setTodolistsAC = (todolists: Array<TodolistType>) =>
     ({type: 'SET-TODOLISTS', todolists} as const)
 
+export const setEntityStatusAC = (todolistId: string, entityStatus: RequestStatusType) =>
+    ({type: 'SET-ENTITY-STATUS', todolistId, entityStatus} as const)
+
 //thunks
 
 export const fetchTodolistsTC = () => {
@@ -50,13 +55,19 @@ export const fetchTodolistsTC = () => {
     }
 }
 
-export const removeTodolistsTC = (todolistId: string) => {
+export const removeTodolistTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setLoadingStatusAC('loading'))
+        dispatch(setEntityStatusAC(todolistId, 'loading'))
         todolistAPI.deleteTodolist(todolistId)
             .then(res => {
                 dispatch(removeTodolistAC(todolistId))
                 dispatch(setLoadingStatusAC('idle'))
+            })
+            .catch(e=>{
+               dispatch(setErrorAC(e.message));
+                dispatch(setEntityStatusAC(todolistId, "failed"))
+                dispatch(setLoadingStatusAC('failed'))
             })
     }
 }
@@ -71,7 +82,7 @@ export const addTodolistTC = (title: string) => {
                         dispatch(setLoadingStatusAC('idle'))
                     } else if (res.data.messages.length) {
                         dispatch(setErrorAC(res.data.messages[0]))
-                    } else dispatch(setErrorAC('Some Error ocured'))
+                    } else dispatch(setErrorAC('Some Error occurred'))
                     dispatch(setLoadingStatusAC('failed'))
                 }
             )
@@ -107,5 +118,7 @@ type ActionsType =
     | SetTodolistsActionType
     | ReturnType<typeof changeTodolistTitleAC>
     | ReturnType<typeof changeTodolistFilterAC>
+    | ReturnType<typeof setEntityStatusAC>
     | SetLoadingStatusType
+
 
