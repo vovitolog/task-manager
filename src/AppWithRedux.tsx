@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
@@ -13,11 +13,12 @@ import {
 } from './state/todolists-reducer';
 import {addTaskTC, removeTaskTC, updateTaskTC} from './state/tasks-reducer';
 import {useSelector} from 'react-redux';
-import {AppRootStateType, useAppDispatch} from './state/store';
+import {AppRootStateType, useAppDispatch, useAppSelector} from './state/store';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import LinearProgress from "@mui/material/LinearProgress"
 import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {ErrorSnackbar} from "./components/ErrorSnackBar/ErrorSnackbar";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -75,8 +76,12 @@ function AppWithRedux() {
         dispatch(thunk);
     }, []);
 
+   // const [status, setStatus] = useState('idle')
+    const status = useAppSelector(state => state.app.status);
+
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -88,7 +93,7 @@ function AppWithRedux() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            <LinearProgress color={'secondary'}/>
+            {status === 'loading' && <LinearProgress color={'secondary'}/>}
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
                     <AddItemForm addItem={addTodolist}/>

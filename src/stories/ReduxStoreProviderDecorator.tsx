@@ -6,10 +6,12 @@ import {v1} from 'uuid';
 import {AppRootStateType} from "../state/store";
 import {combineReducers, createStore} from "redux";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
+import {appReducer} from "../app/app-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
+    app: appReducer
 })
 
 const initialGlobalState: AppRootStateType = {
@@ -38,6 +40,11 @@ const initialGlobalState: AppRootStateType = {
                 description: '', startDate: '', deadLine: '', addedDate: '', priority: TaskPriorities.Low, order: 0
             },
         ],
+    },
+    // @ts-ignore
+    app: {
+        status: 'idle',
+        error: null
     }
 }
 
