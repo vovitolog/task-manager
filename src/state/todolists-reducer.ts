@@ -1,7 +1,8 @@
 import {v1} from 'uuid';
 import {todolistAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
+import {setErrorAC, setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
+import {addTaskAC} from "./tasks-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
@@ -96,8 +97,8 @@ export const fetchTodolistsTC = () => {
         todolistAPI.getTodolists()
             .then(res => {
                 dispatch(setTodolistAC(res.data));
+                dispatch(setLoadingStatusAC('idle'))
             })
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
@@ -107,8 +108,8 @@ export const removeTodolistsTC = (todolistId: string) => {
         todolistAPI.deleteTodolist(todolistId)
             .then(res => {
                 dispatch(removeTodolistAC(todolistId))
+                dispatch(setLoadingStatusAC('idle'))
             })
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
 
@@ -117,9 +118,15 @@ export const addTodolistTC = (title: string) => {
         dispatch(setLoadingStatusAC('loading'))
         todolistAPI.createTodolist(title)
             .then(res => {
-                dispatch(addTodolistAC(res.data.data.item))
-            })
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
+                    if (res.data.resultCode === 0) {
+                        dispatch(addTodolistAC(res.data.data.item));
+                        dispatch(setLoadingStatusAC('idle'))
+                    } else if (res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    } else dispatch(setErrorAC('Some Error ocured'))
+                    dispatch(setLoadingStatusAC('failed'))
+                }
+            )
     }
 }
 
@@ -129,7 +136,7 @@ export const changeTodolistTitleTC = (id: string, title: string) => {
         todolistAPI.updateTodolist(id, title)
             .then(res => {
                 dispatch(changeTodolistTitleAC(id, title))
+                dispatch(setLoadingStatusAC('idle'))
             })
-            .finally(() => dispatch(setLoadingStatusAC('idle')))
     }
 }
