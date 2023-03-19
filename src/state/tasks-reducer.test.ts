@@ -7,7 +7,7 @@ import {
     tasksReducer
 } from './tasks-reducer';
 import {TasksStateType} from '../App';
-import {addTodolistAC, removeTodolistAC, setTodolistAC} from './todolists-reducer';
+import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
 
 let startState: TasksStateType = {};
@@ -125,7 +125,7 @@ test('property with todolistId should be deleted', () => {
 });
 
 test('empty arrays should be added when set todolists', () => {
-    const action = setTodolistAC([
+    const action = setTodolistsAC([
         {id: '1', title: "What to learn", order: 0, addedDate: ''},
         {id: '2', title: "What to buy", order: 0, addedDate: ''}
     ]);

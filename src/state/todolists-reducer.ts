@@ -2,12 +2,16 @@ import {ResultCode, todolistAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setErrorAC, setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
 
+export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
+export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
+export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
+
 type ActionsType =
-    | ReturnType<typeof removeTodolistAC>
-    | ReturnType<typeof addTodolistAC>
+    | RemoveTodolistActionType
+    | AddTodolistActionType
+    | SetTodolistsActionType
     | ReturnType<typeof changeTodolistTitleAC>
     | ReturnType<typeof changeTodolistFilterAC>
-    | ReturnType<typeof setTodolistAC>
     | SetLoadingStatusType
 
 const initialState: Array<TodolistDomainType> = []
@@ -49,6 +53,8 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
     }
 }
 
+//actions
+
 export const removeTodolistAC = (id: string) => ({type: 'REMOVE-TODOLIST', id} as const);
 
 export const addTodolistAC = (todolist: TodolistType) => ({type: 'ADD-TODOLIST', todolist} as const)
@@ -60,16 +66,17 @@ export const changeTodolistTitleAC = (id: string, title: string) => ({
 export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) =>
     ({type: 'CHANGE-TODOLIST-FILTER', id, filter} as const)
 
-export const setTodolistAC = (todolists: Array<TodolistType>) =>
-    ({type: 'SET-TODOLISTS', todolists: todolists} as const)
+export const setTodolistsAC = (todolists: Array<TodolistType>) =>
+    ({type: 'SET-TODOLISTS', todolists} as const)
 
+//thunks
 
 export const fetchTodolistsTC = () => {
     return (dispatch: Dispatch) => {
         dispatch(setLoadingStatusAC('loading'))
         todolistAPI.getTodolists()
             .then(res => {
-                dispatch(setTodolistAC(res.data));
+                dispatch(setTodolistsAC(res.data));
                 dispatch(setLoadingStatusAC('idle'))
             })
     }
