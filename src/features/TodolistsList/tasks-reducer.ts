@@ -6,10 +6,10 @@ import {
     TaskType,
     todolistAPI,
     UpdateTaskModelType
-} from "../api/todolists-api";
+} from "../../api/todolists-api";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../app/store";
-import {setErrorAC, SetErrorType, setLoadingStatusAC} from "../app/app-reducer";
+import {AppRootStateType} from "../../app/store";
+import {setErrorAC, SetErrorType, setLoadingStatusAC} from "../../app/app-reducer";
 
 const initialState: TasksStateType = {}
 
