@@ -7,6 +7,8 @@ import LinearProgress from "@mui/material/LinearProgress"
 import {TaskType} from "../api/todolists-api";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackbar";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
+import {Login} from "../features/Login/Login";
+import {Navigate, Route, Routes} from 'react-router-dom';
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -33,7 +35,13 @@ function App() {
             </AppBar>
             {status === 'loading' && <LinearProgress color={'secondary'}/>}
             <Container fixed>
-                <TodolistsList/>
+                <Routes>
+                    <Route path={'/'} element={<TodolistsList/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path='/404' element={<h1 style={{textAlign: "center"}}>404: PAGE NOT FOUND</h1>}/>
+                    <Route path='*' element={<Navigate to ='404'/>}/>
+
+                </Routes>
             </Container>
         </div>
     );
