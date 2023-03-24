@@ -10,6 +10,11 @@ import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 
 export const Login = () => {
+    type FormikErrorType = {
+        email?: string
+        password?: string
+        rememberMe?: boolean
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -17,10 +22,30 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
+        validate: (values) => {
+            console.log('values ', values)
+            const errors: FormikErrorType = {}
+            if (!values.email) {
+                errors.email = 'Required'
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address'
+            }
+
+            if (!values.password) {
+                errors.password = 'Required'
+            } else if (values.password.length < 6) {
+                errors.password = 'Password should be more six symbols'
+            }
+
+            return errors
+        },
         onSubmit: values => {
             alert(JSON.stringify(values));
         },
     })
+
+    console.log('values ', formik.errors)
+
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
@@ -40,14 +65,21 @@ export const Login = () => {
                                    margin="normal"
                                    name={"email"}
                                    onChange={formik.handleChange}
-                                   value={formik.values.email}/>
+                                   value={formik.values.email}
+                                   onBlur={formik.handleBlur}
+                        />
+                        {formik.errors.email && formik.touched.email &&
+                            <div style={{color: "red"}}>{formik.errors.email}</div>}
                         <TextField type="password"
                                    margin="normal"
                                    label="Password"
                                    name={"password"}
                                    onChange={formik.handleChange}
-                                   value={formik.values.email}
+                                   value={formik.values.password}
+                                   onBlur={formik.handleBlur}
                         />
+                        {formik.errors.password && formik.touched.password &&
+                            <div style={{color: "red"}}>{formik.errors.password}</div>}
                         <FormControlLabel label={'Remember me'}
                                           control={<Checkbox
                                               onChange={formik.handleChange}
