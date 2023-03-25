@@ -1,5 +1,4 @@
 import axios, {AxiosResponse} from 'axios';
-import {number} from "prop-types";
 import {FormDataType} from "../features/Login/Login";
 
 const settings = {
@@ -17,14 +16,22 @@ const instance = axios.create(
 
 export const authAPI = {
     login(data: FormDataType) {
-        return instance.post<ResponseType<{ userId: number }>>('auth/login', data)
+        return instance.post<ResponseType<{ userId?: number }>>('auth/login', data)
             .then(res => {
                 return res.data
             })
     },
     me() {
-        const promise = instance.get<ResponseType>('auth/me')
-        return promise;
+        return instance.get<ResponseType<{ id: number; email: string; login: string }>>('auth/me')
+            .then(res => {
+                return res.data
+            })
+    },
+    logout() {
+        return instance.delete<ResponseType<{userId?: number}>>('auth/login')
+            .then(res => {
+                return res.data
+            });
     }
 }
 

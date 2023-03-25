@@ -30,16 +30,3 @@ export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 
 export type AppActionsType = SetAppStatusActionType | SetAppErrorActionType
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-    authAPI.me()
-        .then(res => {
-        if (res.data.resultCode === ResultCode.SUCCEEDED) {
-            dispatch(setIsInitializedAC(true))
-            dispatch(setIsLoggedInAC(true));
-            dispatch(setAppStatusAC('succeeded'));
-        } else {
-            dispatch(setIsInitializedAC(false))
-            dispatch(setIsLoggedInAC(false));
-        }
-    })
-}

@@ -9,7 +9,8 @@ import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackbar";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {initializeAppTC, RequestStatusType} from "./app-reducer";
+import {RequestStatusType} from "./app-reducer";
+import {initializeAppTC, logoutTC} from "../features/Login/auth-reducer";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -19,10 +20,18 @@ function App() {
 
     const status = useAppSelector<RequestStatusType>(state => state.app.status);
     const isInitialized = useAppSelector<boolean>(state => state.auth.isInitialized);
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         dispatch(initializeAppTC()), []
     })
+    const logoutHandler = () => {
+        console.log('LOGOUT')
+        dispatch(logoutTC());
+    }
+
+    console.log(isInitialized)
 
     if (!isInitialized) {
         return <div
@@ -42,10 +51,10 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
                 </Toolbar>
+                {status === 'loading' && <LinearProgress color={'secondary'}/>}
             </AppBar>
-            {status === 'loading' && <LinearProgress color={'secondary'}/>}
             <Container fixed>
                 <Routes>
                     <Route path={'/'} element={<TodolistsList/>}/>
