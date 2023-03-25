@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
+import {number} from "prop-types";
+import {FormDataType} from "../features/Login/Login";
 
 const settings = {
     withCredentials: true,
@@ -12,6 +14,15 @@ const instance = axios.create(
         ...settings
     }
 )
+
+export const authAPI = {
+    login(data: FormDataType) {
+        return instance.post<ResponseType<{ userId: number }>>('auth/login', data)
+            .then(res=> {
+                return res.data
+            })
+    }
+}
 
 //api
 
@@ -30,7 +41,7 @@ export const todolistAPI = {
         return promise
     },
     getTodolists() {
-        const promise = instance.get <Array<TodolistType>>(
+        const promise = instance.get<Array<TodolistType>>(
             `todo-lists/`,
         )
         return promise
@@ -43,7 +54,7 @@ export const todolistAPI = {
         return promise
     },
     getTasks(todolistId: string) {
-        const promise = instance.get <GetTasksResponse>(
+        const promise = instance.get<GetTasksResponse>(
             `todo-lists/${todolistId}/tasks`,
         )
         return promise
