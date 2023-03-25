@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {useAppDispatch, useAppSelector} from './store';
-import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import LinearProgress from "@mui/material/LinearProgress"
 import {TaskType} from "../api/todolists-api";
@@ -9,7 +9,7 @@ import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackbar";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {initializeAppTC} from "./app-reducer";
+import {initializeAppTC, RequestStatusType} from "./app-reducer";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -17,11 +17,19 @@ export type TasksStateType = {
 
 function App() {
 
-    const status = useAppSelector(state => state.app.status);
+    const status = useAppSelector<RequestStatusType>(state => state.app.status);
+    const isInitialized = useAppSelector<boolean>(state => state.auth.isInitialized);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(initializeAppTC()), []
     })
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
     return (
         <div className="App">
