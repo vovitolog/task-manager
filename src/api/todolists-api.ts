@@ -18,9 +18,13 @@ const instance = axios.create(
 export const authAPI = {
     login(data: FormDataType) {
         return instance.post<ResponseType<{ userId: number }>>('auth/login', data)
-            .then(res=> {
+            .then(res => {
                 return res.data
             })
+    },
+    me() {
+        const promise = instance.get<ResponseType>('auth/me')
+        return promise;
     }
 }
 
