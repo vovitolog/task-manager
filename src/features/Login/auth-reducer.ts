@@ -29,6 +29,7 @@ export const loginTC = (data: FormDataType) => async (dispatch: Dispatch<Actions
         const res = await authAPI.login(data);
         if (res.resultCode === ResultCode.SUCCEEDED) {
             dispatch(setIsLoggedInAC(true))
+            console.log('AUTH')
             dispatch(setAppStatusAC('succeeded'))
         } else {
             handleServerAppError(res, dispatch)
